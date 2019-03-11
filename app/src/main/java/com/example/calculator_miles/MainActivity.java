@@ -32,6 +32,7 @@ public class MainActivity extends AppCompatActivity {
     Button zero;
     Button point;
     Button equals;
+    double result;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -102,10 +103,9 @@ public class MainActivity extends AppCompatActivity {
                 case R.id.divide:
                     boolean lastCharIsDigit = Character.isDigit(calc_entry.getText().charAt(calc_entry.getText().length() - 1));
 
-                    if(calc_entry.getText().length() != 0 && lastCharIsDigit) {
+                    if (calc_entry.getText().length() != 0 && lastCharIsDigit) {
                         calc_entry.append(getResources().getString(R.string.divide));
-                    }
-                    else if(!lastCharIsDigit){
+                    } else if (!lastCharIsDigit) {
                         calc_entry.setText(calc_entry.getText().subSequence(0, calc_entry.getText().length() - 1));
                         calc_entry.append(getResources().getString(R.string.divide));
                     }
@@ -127,10 +127,9 @@ public class MainActivity extends AppCompatActivity {
                 case R.id.multiply:
                     lastCharIsDigit = Character.isDigit(calc_entry.getText().charAt(calc_entry.getText().length() - 1));
 
-                    if(calc_entry.getText().length() != 0 && lastCharIsDigit) {
+                    if (calc_entry.getText().length() != 0 && lastCharIsDigit) {
                         calc_entry.append(getResources().getString(R.string.multiply));
-                    }
-                    else if(!lastCharIsDigit){
+                    } else if (!lastCharIsDigit) {
                         calc_entry.setText(calc_entry.getText().subSequence(0, calc_entry.getText().length() - 1));
                         calc_entry.append(getResources().getString(R.string.multiply));
                     }
@@ -152,10 +151,9 @@ public class MainActivity extends AppCompatActivity {
                 case R.id.minus:
                     lastCharIsDigit = Character.isDigit(calc_entry.getText().charAt(calc_entry.getText().length() - 1));
 
-                    if(calc_entry.getText().length() != 0 && lastCharIsDigit) {
+                    if (calc_entry.getText().length() != 0 && lastCharIsDigit) {
                         calc_entry.append(getResources().getString(R.string.minus));
-                    }
-                    else if(!lastCharIsDigit){
+                    } else if (!lastCharIsDigit) {
                         calc_entry.setText(calc_entry.getText().subSequence(0, calc_entry.getText().length() - 1));
                         calc_entry.append(getResources().getString(R.string.minus));
                     }
@@ -177,10 +175,9 @@ public class MainActivity extends AppCompatActivity {
                 case R.id.plus:
                     lastCharIsDigit = Character.isDigit(calc_entry.getText().charAt(calc_entry.getText().length() - 1));
 
-                    if(calc_entry.getText().length() != 0 && lastCharIsDigit) {
+                    if (calc_entry.getText().length() != 0 && lastCharIsDigit) {
                         calc_entry.append(getResources().getString(R.string.plus));
-                    }
-                    else if(!lastCharIsDigit){
+                    } else if (!lastCharIsDigit) {
                         calc_entry.setText(calc_entry.getText().subSequence(0, calc_entry.getText().length() - 1));
                         calc_entry.append(getResources().getString(R.string.plus));
                     }
@@ -195,10 +192,58 @@ public class MainActivity extends AppCompatActivity {
                     break;
 
                 case R.id.equals:
-                    //this is the hard part
+                    char[] entry = calc_entry.getText().toString().toCharArray();
+                    result = calculate(entry);
+
+                    if (result == Math.round(result)) {
+                        System.out.println("Int: " + Math.round(result) + "  double: " + result);
+                        calc_entry.setText(String.valueOf(Math.round(result)));
+                    } else {
+                        System.out.println("Int: " + Math.round(result) + "  double: " + result);
+                        calc_entry.setText(String.valueOf(result));
+                    }
                     break;
 
             }
         }
     };
+
+    public double calculate(char[] entry) {
+        String nums = "";
+        int i = 0;
+
+        while (Character.isDigit(entry[i]) || entry[i] == '.') {
+            nums += entry[i];
+            i++;
+        }
+        result = Double.valueOf(nums);
+        while (i < entry.length) {
+            char op = entry[i];
+            i++;
+
+            nums = "";
+            while (i < entry.length && Character.isDigit(entry[i])) {
+                nums += entry[i];
+                i++;
+            }
+
+            double num = Integer.valueOf(nums);
+
+            switch (op) {
+                case '+':
+                    result = result + num;
+                    break;
+                case '-':
+                    result = result - num;
+                    break;
+                case 'x':
+                    result = result * num;
+                    break;
+                case '÷':
+                    result = result / num;
+                    break;
+            }
+        }
+        return result;
+    }
 }
