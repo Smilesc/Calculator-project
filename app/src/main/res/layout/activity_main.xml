@@ -14,7 +14,6 @@
         android:layout_marginTop="8dp"
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="8dp"
-        android:columnCount="@dimen/col_count"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.108"
@@ -33,19 +32,13 @@
 
         <Button
             android:id="@+id/clear_everything"
-            android:layout_width="@dimen/cell_width"
+            android:layout_width="201dp"
             android:layout_height="@dimen/cell_height"
             android:layout_row="0"
             android:layout_column="1"
+            android:layout_columnSpan="2"
             android:text="@string/clear_everything" />
 
-        <Button
-            android:id="@+id/percent"
-            android:layout_width="@dimen/cell_width"
-            android:layout_height="@dimen/cell_height"
-            android:layout_row="0"
-            android:layout_column="2"
-            android:text="@string/percent" />
 
         <Button
             android:id="@+id/divide"
@@ -156,12 +149,12 @@
 
 
         <Button
-            android:id="@+id/toggle_negative"
+            android:id="@+id/point"
             android:layout_width="@dimen/cell_width"
             android:layout_height="@dimen/cell_height"
             android:layout_row="4"
             android:layout_column="0"
-            android:text="@string/toggle_negative" />
+            android:text="@string/point" />
 
         <Button
             android:id="@+id/zero"
@@ -171,20 +164,14 @@
             android:layout_column="1"
             android:text="@string/zero" />
 
-        <Button
-            android:id="@+id/point"
-            android:layout_width="@dimen/cell_width"
-            android:layout_height="@dimen/cell_height"
-            android:layout_row="4"
-            android:layout_column="2"
-            android:text="@string/point" />
 
         <Button
             android:id="@+id/equals"
-            android:layout_width="@dimen/cell_width"
+            android:layout_width="199dp"
             android:layout_height="@dimen/cell_height"
             android:layout_row="4"
-            android:layout_column="3"
+            android:layout_column="2"
+            android:layout_columnSpan="2"
             android:text="@string/equals" />
 
 
@@ -198,9 +185,9 @@
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
-        android:text="0015+444"
-        android:textSize="@dimen/calc_text"
         android:gravity="end"
+        android:text=""
+        android:textSize="@dimen/calc_text"
         app:layout_constraintBottom_toTopOf="@+id/gridLayout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

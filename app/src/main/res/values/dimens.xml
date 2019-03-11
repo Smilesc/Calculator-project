@@ -3,7 +3,7 @@
     <dimen name="cell_width">100dp</dimen>
     <dimen name="cell_height">75dp</dimen>
 
-    <dimen name="col_count">4</dimen>
+    <dimen name="col_count">5</dimen>
 
     <dimen name="calc_text">45sp</dimen>
 
