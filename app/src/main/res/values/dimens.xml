@@ -3,8 +3,11 @@
     <dimen name="cell_width">100dp</dimen>
     <dimen name="cell_height">75dp</dimen>
 
-    <dimen name="col_count">5</dimen>
+    <dimen name="generic_margin">8dp</dimen>
 
     <dimen name="calc_text">45sp</dimen>
+
+    <dimen name="cell_width_land">178dp</dimen>
+    <dimen name="cell_height_land">50dp</dimen>
 
 </resources>

@@ -1,9 +1,10 @@
 <resources>
     <string name="app_name">Calculator-miles</string>
+    <string name="mem">Mem: \</string>
 
     <string name="clear">C</string>
     <string name="clear_everything">CE</string>
-    <string name="percent">%</string>
+    <string name="point">.</string>
     <string name="divide">÷</string>
 
     <string name="seven">7</string>
@@ -21,9 +22,9 @@
     <string name="three">3</string>
     <string name="plus">+</string>
 
-    <string name="toggle_negative">+/-</string>
     <string name="zero">0</string>
-    <string name="point">.</string>
+    <string name="memSet">M+</string>
+    <string name="memGet">M</string>
     <string name="equals">=</string>
 
 </resources>

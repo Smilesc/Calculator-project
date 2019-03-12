@@ -1,17 +1,24 @@
 package com.example.calculator_miles;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.os.PersistableBundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import java.text.DecimalFormat;
 
 public class MainActivity extends AppCompatActivity {
 
     TextView calc_entry;
+    TextView mem;
 
     Button clear;
     Button clear_everything;
+    Button point;
     Button divide;
 
     Button seven;
@@ -30,9 +37,13 @@ public class MainActivity extends AppCompatActivity {
     Button plus;
 
     Button zero;
-    Button point;
+    Button memSet;
+    Button memGet;
     Button equals;
+
     double result;
+    String memory;
+    DecimalFormat f = new DecimalFormat("##.######");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,9 +51,11 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         calc_entry = findViewById(R.id.calc_entry);
+        mem = findViewById(R.id.mem);
 
         clear = findViewById(R.id.clear);
         clear_everything = findViewById(R.id.clear_everything);
+        point = findViewById(R.id.point);
         divide = findViewById(R.id.divide);
 
         seven = findViewById(R.id.seven);
@@ -61,11 +74,13 @@ public class MainActivity extends AppCompatActivity {
         plus = findViewById(R.id.plus);
 
         zero = findViewById(R.id.zero);
-        point = findViewById(R.id.point);
+        memSet = findViewById(R.id.memSet);
+        memGet = findViewById(R.id.memGet);
         equals = findViewById(R.id.equals);
 
         clear.setOnClickListener(myOnClickListener);
         clear_everything.setOnClickListener(myOnClickListener);
+        point.setOnClickListener(myOnClickListener);
         divide.setOnClickListener(myOnClickListener);
 
         seven.setOnClickListener(myOnClickListener);
@@ -84,7 +99,8 @@ public class MainActivity extends AppCompatActivity {
         plus.setOnClickListener(myOnClickListener);
 
         zero.setOnClickListener(myOnClickListener);
-        point.setOnClickListener(myOnClickListener);
+        memSet.setOnClickListener(myOnClickListener);
+        memGet.setOnClickListener(myOnClickListener);
         equals.setOnClickListener(myOnClickListener);
     }
 
@@ -100,6 +116,10 @@ public class MainActivity extends AppCompatActivity {
                     calc_entry.setText("");
                     break;
 
+                case R.id.point:
+                    calc_entry.append(getResources().getString(R.string.point));
+                    break;
+
                 case R.id.divide:
                     boolean lastCharIsDigit = Character.isDigit(calc_entry.getText().charAt(calc_entry.getText().length() - 1));
 
@@ -110,7 +130,6 @@ public class MainActivity extends AppCompatActivity {
                         calc_entry.append(getResources().getString(R.string.divide));
                     }
                     break;
-
 
                 case R.id.seven:
                     calc_entry.append(getResources().getString(R.string.seven));
@@ -135,7 +154,6 @@ public class MainActivity extends AppCompatActivity {
                     }
                     break;
 
-
                 case R.id.four:
                     calc_entry.append(getResources().getString(R.string.four));
                     break;
@@ -158,7 +176,6 @@ public class MainActivity extends AppCompatActivity {
                         calc_entry.append(getResources().getString(R.string.minus));
                     }
                     break;
-
 
                 case R.id.one:
                     calc_entry.append(getResources().getString(R.string.one));
@@ -187,8 +204,15 @@ public class MainActivity extends AppCompatActivity {
                     calc_entry.append(getResources().getString(R.string.zero));
                     break;
 
-                case R.id.point:
-                    calc_entry.append(getResources().getString(R.string.point));
+                case R.id.memSet:
+                    memory = calc_entry.getText().toString();
+                    mem.setText(getResources().getString(R.string.mem));
+                    mem.append(memory);
+                    Toast.makeText(MainActivity.this, "Memory set", Toast.LENGTH_SHORT).show();
+                    break;
+
+                case R.id.memGet:
+                    calc_entry.append(memory);
                     break;
 
                 case R.id.equals:
@@ -200,7 +224,7 @@ public class MainActivity extends AppCompatActivity {
                         calc_entry.setText(String.valueOf(Math.round(result)));
                     } else {
                         System.out.println("Int: " + Math.round(result) + "  double: " + result);
-                        calc_entry.setText(String.valueOf(result));
+                        calc_entry.setText(String.valueOf(f.format(result)));
                     }
                     break;
 
@@ -212,7 +236,7 @@ public class MainActivity extends AppCompatActivity {
         String nums = "";
         int i = 0;
 
-        while (Character.isDigit(entry[i]) || entry[i] == '.') {
+        while (i < entry.length && (Character.isDigit(entry[i]) || entry[i] == '.')) {
             nums += entry[i];
             i++;
         }
@@ -222,16 +246,19 @@ public class MainActivity extends AppCompatActivity {
             i++;
 
             nums = "";
-            while (i < entry.length && Character.isDigit(entry[i])) {
+            while (i < entry.length && (Character.isDigit(entry[i]) || entry[i] == '.')) {
                 nums += entry[i];
                 i++;
+                System.out.println("i: " + i + "  len: " + entry.length);
             }
 
-            double num = Integer.valueOf(nums);
+            double num = Double.valueOf(nums);
 
             switch (op) {
                 case '+':
+                    System.out.println("result: " + result + "  num: " + num);
                     result = result + num;
+                    System.out.println(result);
                     break;
                 case '-':
                     result = result - num;
@@ -240,10 +267,31 @@ public class MainActivity extends AppCompatActivity {
                     result = result * num;
                     break;
                 case '÷':
-                    result = result / num;
+                    if (num != 0) {
+                        result = result / num;
+                    } else {
+                        Toast.makeText(this, "Cannot divide by 0", Toast.LENGTH_LONG).show();
+                    }
                     break;
             }
         }
         return result;
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putString("memory", memory);
+        outState.putString("calc_entry", calc_entry.getText().toString());
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+
+        calc_entry.setText(savedInstanceState.getString("calc_entry"));
+        mem.setText(getResources().getString(R.string.mem));
+        mem.append(savedInstanceState.getString("memory"));
+
     }
 }
